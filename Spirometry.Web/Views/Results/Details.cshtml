@@ -1,0 +1,84 @@
+﻿@* Testin genel bilgilerini ve ölçümlerini alır. *@
+@model Spirometry.Web.Models.TestDetailsViewModel
+
+@{
+    // Sayfa başlığını belirler.
+    ViewData["Title"] = "Test Detayı";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Test Detayı</h1>
+
+    @* Test listesine geri döner. *@
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        Listeye Dön
+    </a>
+</div>
+
+@* Seçilen testin genel bilgilerini gösterir. *@
+<dl class="row">
+    <dt class="col-sm-3">OSGB</dt>
+    <dd class="col-sm-9">@Model.Test.TenantId</dd>
+
+    <dt class="col-sm-3">İş Emri</dt>
+    <dd class="col-sm-9">@Model.Test.OrderId</dd>
+
+    <dt class="col-sm-3">Çalışan Referansı</dt>
+    <dd class="col-sm-9">@Model.Test.EmployeeRef</dd>
+
+    <dt class="col-sm-3">Test Tarihi</dt>
+    <dd class="col-sm-9">
+        @Model.Test.TestDate.ToString("dd.MM.yyyy HH:mm:ss")
+    </dd>
+
+    <dt class="col-sm-3">Test Türü</dt>
+    <dd class="col-sm-9">@Model.Test.TestType</dd>
+
+    <dt class="col-sm-3">Kalite Derecesi</dt>
+    <dd class="col-sm-9">@(Model.Test.QualityGrade ?? "—")</dd>
+</dl>
+
+@* Eksik ölçüm gibi içe aktarım uyarılarını gösterir. *@
+@if (Model.Test.Warnings.Length > 0)
+{
+    <div class="alert alert-warning">
+        <strong>İçe aktarım uyarıları</strong>
+        <ul class="mb-0 mt-2">
+            @foreach (string warning in Model.Test.Warnings)
+            {
+                <li>@warning</li>
+            }
+        </ul>
+    </div>
+}
+
+<h2 class="h5 mt-4">Ölçümler</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Kod</th>
+                <th>Ölçülen Değer</th>
+                <th>Birim</th>
+                <th>Beklenen Değer</th>
+                <th>Alt Normal Sınır</th>
+            </tr>
+        </thead>
+        <tbody>
+            @* Kaydedilmiş ölçümleri sırayla gösterir. *@
+            @foreach (var measurement in Model.Measurements)
+            {
+                <tr>
+                    <td>@measurement.Code</td>
+                    <td>@measurement.Value</td>
+                    <td>@measurement.Unit</td>
+
+                    @* Eksik sayısal değerleri sıfır yerine çizgiyle gösterir. *@
+                    <td>@(measurement.PredictedValue?.ToString() ?? "—")</td>
+                    <td>@(measurement.LowerLimitOfNormal?.ToString() ?? "—")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

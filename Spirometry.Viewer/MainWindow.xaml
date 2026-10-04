@@ -1,0 +1,187 @@
+﻿<!-- Uygulamanın ana penceresini tanımlar. -->
+<Window x:Class="Spirometry.Viewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Spirometri Sonuçları"
+        Width="1100"
+        Height="740"
+        MinWidth="850"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#F3F5F8">
+
+    <!-- Ekranın ana yerleşimini oluşturur. -->
+    <Grid Margin="24">
+
+        <!-- Başlık, bağlantı, testler, ölçümler ve durum alanlarını ayırır. -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Ekran başlığını ve kısa açıklamayı gösterir. -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+
+            <!-- Ana başlığı gösterir. -->
+            <TextBlock Text="Spirometri Sonuçları"
+                       FontSize="26"
+                       FontWeight="SemiBold"
+                       Foreground="#172033"/>
+
+            <!-- Ekranın kullanım amacını açıklar. -->
+            <TextBlock Text="OSGB hesabınızla bağlanarak test sonuçlarını görüntüleyin."
+                       Margin="0,6,0,0"
+                       Foreground="#526075"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- Hesap seçimi ve parola girişini ayrı bir alanda toplar. -->
+        <Border Grid.Row="1"
+                Background="White"
+                CornerRadius="8"
+                Padding="16"
+                Margin="0,0,0,16">
+
+            <!-- Bağlantı kontrollerini üç sütuna yerleştirir. -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- OSGB seçimini gösterir. -->
+                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                    <TextBlock Text="OSGB hesabı" Margin="0,0,0,6"/>
+
+                    <!-- Tag değerleri sonraki adımda bağlantı hesabını belirleyecek. -->
+                    <ComboBox x:Name="TenantSelector"
+                              Height="34"
+                              SelectedIndex="0"
+                              VerticalContentAlignment="Center">
+                        <ComboBoxItem Content="Örnek OSGB A"
+                                      Tag="spirometry_osgb_a"/>
+                        <ComboBoxItem Content="Örnek OSGB B"
+                                      Tag="spirometry_osgb_b"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Seçilen hesabın parolasını ister. -->
+                <StackPanel Grid.Column="1" Margin="0,0,16,0">
+                    <TextBlock Text="Hesap parolası" Margin="0,0,0,6"/>
+
+                    <!-- Parolayı ekranda gizleyerek giriş yapılmasını sağlar. -->
+                    <PasswordBox x:Name="PasswordInput"
+                                 Height="34"
+                                 Padding="8,0"
+                                 VerticalContentAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Sonraki adımda sonuçları yükleme işlemine bağlanacak düğmedir. -->
+                <Button x:Name="LoadButton"
+                        Grid.Column="2"
+                        Content="Sonuçları Getir"
+                        Height="34"
+                        Padding="20,0"
+                        VerticalAlignment="Bottom"
+                        Background="#2255A4"
+                        Foreground="White"
+                        BorderThickness="0"/>
+            </Grid>
+        </Border>
+
+        <!-- Hesabın erişebildiği testleri listeler. -->
+        <GroupBox Grid.Row="2"
+                  Header="Testler"
+                  Padding="10"
+                  Margin="0,0,0,16">
+
+            <!-- Testleri salt okunur ve tek satır seçilebilir biçimde gösterir. -->
+            <DataGrid x:Name="TestsGrid"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow"
+                      RowHeight="32"
+                      ColumnHeaderHeight="34"
+                      GridLinesVisibility="Horizontal"
+                      Background="White">
+
+                <!-- Sütunların hangi model özelliklerini göstereceğini belirler. -->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="OSGB"
+                                        Binding="{Binding TenantId}"
+                                        Width="80"/>
+                    <DataGridTextColumn Header="İş emri"
+                                        Binding="{Binding OrderId}"
+                                        Width="100"/>
+                    <DataGridTextColumn Header="Çalışan"
+                                        Binding="{Binding EmployeeRef}"
+                                        Width="120"/>
+                    <DataGridTextColumn Header="Test tarihi"
+                                        Binding="{Binding TestDate, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}"
+                                        Width="170"/>
+                    <DataGridTextColumn Header="Tür"
+                                        Binding="{Binding TestType}"
+                                        Width="70"/>
+                    <DataGridTextColumn Header="Kalite"
+                                        Binding="{Binding QualityGrade}"
+                                        Width="70"/>
+                    <DataGridTextColumn Header="Uyarılar"
+                                        Binding="{Binding WarningsText}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <!-- Kullanıcının seçtiği testin ölçümlerini gösterir. -->
+        <GroupBox Grid.Row="3"
+                  Header="Seçilen Testin Ölçümleri"
+                  Padding="10"
+                  Margin="0,0,0,16">
+
+            <!-- Ölçüm değerlerinin ekrandan değiştirilmesini engeller. -->
+            <DataGrid x:Name="MeasurementsGrid"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      RowHeight="32"
+                      ColumnHeaderHeight="34"
+                      GridLinesVisibility="Horizontal"
+                      Background="White">
+
+                <!-- Ölçüm alanlarını ayrı sütunlarda gösterir. -->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Ölçüm"
+                                        Binding="{Binding Code}"
+                                        Width="*"/>
+                    <DataGridTextColumn Header="Değer"
+                                        Binding="{Binding Value}"
+                                        Width="*"/>
+                    <DataGridTextColumn Header="Birim"
+                                        Binding="{Binding Unit}"
+                                        Width="*"/>
+                    <DataGridTextColumn Header="Beklenen değer"
+                                        Binding="{Binding PredictedValue}"
+                                        Width="*"/>
+                    <DataGridTextColumn Header="Alt normal sınır"
+                                        Binding="{Binding LowerLimitOfNormal}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <!-- Bağlantı, yükleme ve hata mesajlarını gösterecek alandır. -->
+        <TextBlock x:Name="StatusText"
+                   Grid.Row="4"
+                   Text="Henüz bağlantı kurulmadı."
+                   Foreground="#526075"
+                   TextWrapping="Wrap"/>
+    </Grid>
+</Window>

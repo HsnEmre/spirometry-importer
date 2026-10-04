@@ -1,0 +1,83 @@
+﻿@* Controller'dan gelen test listesini alır. *@
+@model List<Spirometry.Web.Models.TestListItemViewModel>
+
+@{
+    // Sayfanın başlığını belirler.
+    ViewData["Title"] = "Spirometri Sonuçları";
+}
+
+<h1 class="h3 mb-3">Spirometri Sonuçları</h1>
+
+@* Sorgu başarısız olduysa boş sonuç mesajı yerine hatayı gösterir. *@
+@if (ViewData["LoadError"] is string error)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+else if (Model.Count == 0)
+{
+    <div class="alert alert-info">
+        Görüntülenebilecek test bulunamadı.
+    </div>
+}
+else
+{
+    <p class="text-muted">@Model.Count test listelendi.</p>
+
+    @* Küçük ekranlarda tablonun yatay kaydırılmasını sağlar. *@
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>OSGB</th>
+                    <th>İş Emri</th>
+                    <th>Çalışan</th>
+                    <th>Test Tarihi</th>
+                    <th>Tür</th>
+                    <th>Kalite</th>
+                    <th>Uyarılar</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @* Her testi ayrı bir satırda gösterir. *@
+                @foreach (var test in Model)
+                {
+                    <tr>
+                        <td>@test.TenantId</td>
+                        <td>@test.OrderId</td>
+                        <td>@test.EmployeeRef</td>
+                        <td>@test.TestDate.ToString("dd.MM.yyyy HH:mm:ss")</td>
+                        <td>@test.TestType</td>
+                        <td>@(test.QualityGrade ?? "—")</td>
+                        <td>
+                            @* Kaydedilmiş uyarıları tek tek gösterir. *@
+                            @if (test.Warnings.Length > 0)
+                            {
+                                foreach (string warning in test.Warnings)
+                                {
+                                    <div class="text-warning-emphasis">
+                                        @warning
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">Yok</span>
+                            }
+                        </td>
+                        @* İlgili testin kimliğiyle detay sayfasını açar. *@
+<td>
+    <a asp-action="Details"
+       asp-route-id="@test.Id"
+       class="btn btn-sm btn-outline-primary">
+        Detay
+    </a>
+</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ndd Version="ndd.EasyWarePro.V1">
+  <Command Type="TestResult">
+    <Parameter Name="OrderID">O-1001</Parameter>
+  </Command>
+  <Patients>
+    <Patient ID="SYN-0001">
+      <LastName>Deneme</LastName>
+      <FirstName>Ahmet</FirstName>
+      <PatientDataAtPresent>
+        <Gender>male</Gender>
+        <DateOfBirth>1985-04-12</DateOfBirth>
+        <Height>176</Height>
+        <Weight>82</Weight>
+        <Ethnicity>Caucasian</Ethnicity>
+      </PatientDataAtPresent>
+      <Intervals>
+        <Interval>
+          <Tests>
+            <Test TypeOfTest="FVC">
+              <TestDate>2026-09-22T09:14:03</TestDate>
+              <QualityGrade>A</QualityGrade>
+              <BestValues>
+              <ResultParameter ID="FVC">
+                <DataValue>4.52</DataValue>
+                <Unit>L</Unit>
+                <PredictedValue>4.60</PredictedValue>
+                <LLNormal>3.75</LLNormal>
+              </ResultParameter>
+              <ResultParameter ID="FEV1">
+                <DataValue>3.71</DataValue>
+                <Unit>L</Unit>
+                <PredictedValue>3.80</PredictedValue>
+                <LLNormal>3.05</LLNormal>
+              </ResultParameter>
+              <ResultParameter ID="FEV1_FVC">
+                <DataValue>82.1</DataValue>
+                <Unit>%</Unit>
+                <PredictedValue>81.0</PredictedValue>
+                <LLNormal>70.0</LLNormal>
+              </ResultParameter>
+              <ResultParameter ID="PEF">
+                <DataValue>8.95</DataValue>
+                <Unit>L/s</Unit>
+                <PredictedValue>9.40</PredictedValue>
+                <LLNormal>7.30</LLNormal>
+              </ResultParameter>
+              </BestValues>
+            </Test>
+          </Tests>
+        </Interval>
+      </Intervals>
+    </Patient>
+  </Patients>
+</ndd>

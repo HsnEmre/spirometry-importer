@@ -1,0 +1,84 @@
+﻿@* Formun kullanacağı modeli belirtir. *@
+@model Spirometry.Web.Models.LoginViewModel
+
+@{
+    // Tarayıcıda ve sayfa düzeninde kullanılacak başlığı belirler.
+    ViewData["Title"] = "OSGB Girişi";
+}
+
+@* Giriş formunu sayfanın ortasına yerleştirir. *@
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-2">Spirometri Sonuçları</h1>
+
+                <p class="text-muted mb-4">
+                    Sonuçlarınızı görmek için OSGB hesabınızla giriş yapın.
+                </p>
+
+                @* Bilgileri adres çubuğuna eklemeden POST ile gönderir. *@
+                <form asp-controller="Account"
+                      asp-action="Login"
+                      method="post"
+                      asp-antiforgery="true">
+
+                    @* Hesap doğrulama gibi genel hataları gösterir. *@
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger mb-3"
+                         role="alert">
+                    </div>
+
+                    <div class="mb-3">
+                        @* Modeldeki Display adını başlık olarak kullanır. *@
+                        <label asp-for="TenantCode"
+                               class="form-label">
+                        </label>
+
+                        @* Sunucu bu değerleri ayrıca kontrol edecek. *@
+                        <select asp-for="TenantCode"
+                                class="form-select">
+                            <option value="">OSGB seçin</option>
+                            <option value="T-01">Örnek OSGB A</option>
+                            <option value="T-02">Örnek OSGB B</option>
+                        </select>
+
+                        @* OSGB seçimine ait doğrulama hatasını gösterir. *@
+                        <span asp-validation-for="TenantCode"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        @* Parola alanının başlığını gösterir. *@
+                        <label asp-for="Password"
+                               class="form-label">
+                        </label>
+
+                        @* Yazılan parolayı ekranda gizler. *@
+                        <input asp-for="Password"
+                               type="password"
+                               class="form-control"
+                               autocomplete="current-password" />
+
+                        @* Parolaya ait doğrulama hatasını gösterir. *@
+                        <span asp-validation-for="Password"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    @* Formu giriş işlemine gönderir. *@
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+                        Giriş Yap
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* MVC şablonundaki tarayıcı tarafı doğrulamayı yükler. *@
+    <partial name="_ValidationScriptsPartial" />
+}

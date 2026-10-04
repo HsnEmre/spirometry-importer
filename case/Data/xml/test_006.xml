@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ndd Version="ndd.EasyWarePro.V1">
+  <Command Type="TestResult">
+    <Parameter Name="OrderID">O-1005</Parameter>
+  </Command>
+  <Patients>
+    <Patient ID="SYN-0005">
+      <LastName>Test</LastName>
+      <FirstName>Can</FirstName>
+      <PatientDataAtPresent>
+        <Gender>male</Gender>
+        <DateOfBirth>1995-01-08</DateOfBirth>
+        <Height>179</Height>
+        <Weight>77</Weight>
+        <Ethnicity>Caucasian</Ethnicity>
+      </PatientDataAtPresent>
+      <Intervals>
+        <Interval>
+          <Tests>
+            <Test TypeOfTest="FVC">
+              <TestDate>2026-09-24T14:05:12</TestDate>
+              <QualityGrade>A</QualityGrade>
+              <BestValues>
+              <ResultParameter ID="FVC">
+      

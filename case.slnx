@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="case/Spirometry.Importer.csproj" />
+  <Project Path="Spirometry.Data/Spirometry.Data.csproj" Id="02d1ae6f-7661-4b8c-b343-fd62961fb543" />
+  <Project Path="Spirometry.Viewer/Spirometry.Viewer.csproj" Id="1863c260-7785-4987-a1ec-20fc6887e660" />
+  <Project Path="Spirometry.Web/Spirometry.Web.csproj" Id="7c9a3622-3de8-4f66-a54f-79c2c4d90df9" />
+</Solution>
